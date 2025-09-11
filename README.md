@@ -68,18 +68,128 @@
         .card button:hover { 
             background: #218838; 
         }
-        @media (max-width: 600px) {
+        /* New Table Styles */
+        #create-co-funding {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        #create-co-funding h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        #prop-firms-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #prop-firms-table th,
+        #prop-firms-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        #prop-firms-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        #prop-firms-table tr:hover {
+            background: #f5f5f5;
+        }
+        #prop-firms-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .action-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .action-btn:hover {
+            background: #0056b3;
+        }
+        .promo {
+            font-weight: bold;
+            color: #28a745;
+        }
+        @media (max-width: 768px) {
             .container { flex-direction: column; align-items: center; }
+            #prop-firms-table {
+                font-size: 0.9em;
+            }
+            #prop-firms-table th,
+            #prop-firms-table td {
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
     <h1>Top Prop Firm Brokers - September 2025 Demo</h1>
     <p style="text-align: center; color: #666;">Updated with the latest firms based on recent reviews. Click "Visit Broker" to explore (affiliate links ready for commissions).</p>
+    
+    <!-- Original Cards Section -->
     <div class="container" id="firms-container"></div>
 
+    <!-- Placeholder for "Create Co-Funding" Section -->
+    <section id="create-co-funding">
+        <h2>Create Co-Funding</h2>
+        <p>Here you can set up co-funding opportunities with partners. (Placeholder for your actual form/button.)</p>
+    </section>
+
+    <!-- New Prop Firms Table Section -->
+    <section style="max-width: 1200px; margin: 40px auto;">
+        <h2 style="text-align: center; color: #333;">Prop Firms Comparison Table</h2>
+        <table id="prop-firms-table">
+            <thead>
+                <tr>
+                    <th>Firm</th>
+                    <th>Rank / Reviews</th>
+                    <th>Country</th>
+                    <th>Years in Operation</th>
+                    <th>Assets</th>
+                    <th>Platforms</th>
+                    <th>Max Allocations</th>
+                    <th>Promo</th>
+                    <th>Profit Split</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Static Example Row for FTMO -->
+                <tr>
+                    <td>FTMO</td>
+                    <td>#1 / 4.8/5 (20k+ reviews)</td>
+                    <td>Czech Republic</td>
+                    <td>9</td>
+                    <td>Forex, Indices, Crypto, Metals</td>
+                    <td>MT4, MT5, cTrader</td>
+                    <td>$2M</td>
+                    <td class="promo">25% off with PROPFIRMS25</td>
+                    <td>80-90%</td>
+                    <td><a href="https://ftmo.com/en/affiliate-program/?ref=yourid" target="_blank" rel="noopener noreferrer" class="action-btn">Visit Broker</a></td>
+                </tr>
+                <!-- Add more rows dynamically later via JS/API -->
+            </tbody>
+        </table>
+        <p style="text-align: center; color: #666; margin-top: 10px;">(Static demo row. Will fetch from API for full data.)</p>
+    </section>
+
     <script>
-        // Simulated API data (updated for 2025 from Benzinga, CBS News, etc.)
+        // Simulated API data (from previous demo)
         const firms = [
             {
                 name: 'FTMO',
@@ -89,6 +199,7 @@
                 logo: 'https://ftmo.com/wp-content/themes/ftmo/assets/images/ftmo-logo-white.svg',
                 affiliate_link: 'https://ftmo.com/en/affiliate-program/?ref=yourid'
             },
+            // ... (other firms from previous)
             {
                 name: 'FundedNext',
                 website: 'https://fundednext.com/',
@@ -163,7 +274,7 @@
             }
         ];
 
-        // Render cards (simulates API fetch)
+        // Render cards (simulates API fetch for cards)
         const container = document.getElementById('firms-container');
         firms.forEach(firm => {
             const card = document.createElement('div');
@@ -179,6 +290,32 @@
             `;
             container.appendChild(card);
         });
+
+        // Future: Dynamic table population (uncomment and adapt when API ready)
+        /*
+        fetch('http://localhost:3000/api/firms')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#prop-firms-table tbody');
+                tbody.innerHTML = ''; // Clear static row
+                data.forEach(firm => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${firm.name}</td>
+                        <td>${firm.rank} / ${firm.reviews}</td>
+                        <td>${firm.country}</td>
+                        <td>${firm.years}</td>
+                        <td>${firm.assets}</td>
+                        <td>${firm.platforms}</td>
+                        <td>${firm.max_allocation}</td>
+                        <td class="promo">${firm.promo || 'None'}</td>
+                        <td>${firm.profit_split}</td>
+                        <td><a href="${firm.affiliate_link}" target="_blank" rel="noopener noreferrer" class="action-btn">Visit Broker</a></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+        */
     </script>
 </body>
 </html>
