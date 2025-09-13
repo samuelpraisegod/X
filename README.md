@@ -88,6 +88,18 @@
             background-color: #cccccc;
             cursor: not-allowed;
         }
+        #profitSplitTap {
+            cursor: pointer;
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        #profitSplitDetails {
+            display: none;
+            margin-left: 10px;
+        }
         #contributionDetails {
             background: #f9f9f9;
             padding: 15px;
@@ -117,21 +129,20 @@
                 <span id="toggleStatus">ON</span>
             </div>
             <form id="coFundingForm">
-                <label for="propFirm">Prop Firm:</label>
-                <select id="propFirm" name="propFirm" required>
-                    <option value="">Select Prop Firm</option>
-                    <option value="FTMO">FTMO</option>
-                    <option value="E8 Funding">E8 Funding</option>
-                    <option value="The5ers">The5ers</option>
-                </select>
-
                 <label for="accountSize">Account Size:</label>
                 <select id="accountSize" name="accountSize" required>
                     <option value="">Select Account Size</option>
+                    <option value="1000">$1,000</option>
+                    <option value="5000">$5,000</option>
+                    <option value="10000">$10,000</option>
+                    <option value="25000">$25,000</option>
+                    <option value="50000">$50,000</option>
                 </select>
 
-                <label>Profit Split Agreement:</label>
-                <p>70/30</p>
+                <div id="profitSplitTap">Profit Split Agreement (Tap to View)</div>
+                <div id="profitSplitDetails">
+                    <p>70/30</p>
+                </div>
 
                 <div id="contributionDetails">
                     <h3>showTab - Contribution Breakdown</h3>
@@ -149,7 +160,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('coFundingForm');
-            const propFirm = document.getElementById('propFirm');
             const accountSize = document.getElementById('accountSize');
             const accountPrice = document.getElementById('accountPrice');
             const selectedProfitSplit = document.getElementById('selectedProfitSplit');
@@ -160,80 +170,36 @@
             const toggleStatus = document.getElementById('toggleStatus');
             const submitButton = document.getElementById('submitButton');
             const contributionDetails = document.getElementById('contributionDetails');
+            const profitSplitTap = document.getElementById('profitSplitTap');
+            const profitSplitDetails = document.getElementById('profitSplitDetails');
 
-            // Simulated API data for prop firms (replace with actual API in production)
+            // Simulated API data for account sizes and prices (replace with actual API)
             // Prices based on 2025 offers, with $15 for $1K as per example
-            const propFirmData = {
-                'FTMO': {
-                    accountSizes: [
-                        { size: '10000', price: 170 }, // USD, ~155 EUR
-                        { size: '25000', price: 275 }, // ~250 EUR
-                        { size: '50000', price: 380 }, // ~345 EUR
-                        { size: '100000', price: 594 } // ~540 EUR
-                    ]
-                },
-                'E8 Funding': {
-                    accountSizes: [
-                        { size: '1000', price: 15 },   // As per example
-                        { size: '5000', price: 59 },
-                        { size: '10000', price: 99 },
-                        { size: '25000', price: 208 },
-                        { size: '50000', price: 338 }
-                    ]
-                },
-                'The5ers': {
-                    accountSizes: [
-                        { size: '1000', price: 15 },   // As per example
-                        { size: '5000', price: 39 },
-                        { size: '10000', price: 85 },
-                        { size: '25000', price: 165 },
-                        { size: '50000', price: 260 }
-                    ]
-                }
+            const accountData = {
+                '1000': 15,   // As per example
+                '5000': 39,   // Typical for $5K account
+                '10000': 85,  // Typical for $10K
+                '25000': 165, // Typical for $25K
+                '50000': 260  // Typical for $50K
             };
 
-            // Simulate API call to fetch prop firm account sizes
-            function fetchPropFirmDetails(firm) {
+            // Simulate API call to fetch price for account size
+            function getPrice(size) {
                 // TODO: Replace with actual API call, e.g.:
-                // return fetch(`/api/propfirm/details?firm=${firm}`)
-                //   .then(response => response.json());
-                return Promise.resolve(propFirmData[firm] || { accountSizes: [] });
-            }
-
-            // Simulate API call to fetch price for specific account size
-            function getPrice(firm, size) {
-                // TODO: Replace with actual API call, e.g.:
-                // return fetch(`/api/propfirm/price?firm=${firm}&size=${size}`)
+                // return fetch(`/api/propfirm/price?size=${size}`)
                 //   .then(response => response.json())
                 //   .then(data => data.price);
-                const firmData = propFirmData[firm];
-                const account = firmData?.accountSizes.find(acc => acc.size === size);
-                return Promise.resolve(account?.price || 0);
-            }
-
-            // Populate account size dropdown
-            function populateAccountSizes(firm) {
-                accountSize.innerHTML = '<option value="">Select Account Size</option>';
-                const firmData = propFirmData[firm];
-                if (firmData && firmData.accountSizes) {
-                    firmData.accountSizes.forEach(acc => {
-                        const option = document.createElement('option');
-                        option.value = acc.size;
-                        option.textContent = `$${parseInt(acc.size).toLocaleString()}`;
-                        accountSize.appendChild(option);
-                    });
-                }
+                return Promise.resolve(accountData[size] || 0);
             }
 
             // Update contributions
             async function updateContributions() {
-                const firm = propFirm.value;
                 const size = accountSize.value;
                 const split = 70; // Fixed at 70/30 as per requirement
 
                 let price = 0;
-                if (firm && size) {
-                    price = await getPrice(firm, size);
+                if (size) {
+                    price = await getPrice(size);
                 }
 
                 accountPrice.textContent = price ? `$${price.toFixed(2)}` : 'TBD';
@@ -254,7 +220,6 @@
             function toggleCoFunding() {
                 const isEnabled = calculatorToggle.checked;
                 toggleStatus.textContent = isEnabled ? 'ON' : 'OFF';
-                propFirm.disabled = !isEnabled;
                 accountSize.disabled = !isEnabled;
                 submitButton.disabled = !isEnabled;
                 contributionDetails.style.display = isEnabled ? 'block' : 'none';
@@ -269,22 +234,16 @@
                 }
             }
 
+            // Toggle profit split details visibility
+            profitSplitTap.addEventListener('click', () => {
+                profitSplitDetails.style.display = profitSplitDetails.style.display === 'block' ? 'none' : 'block';
+            });
+
             // Event listeners
             calculatorToggle.addEventListener('change', toggleCoFunding);
-            propFirm.addEventListener('change', async () => {
-                const firm = propFirm.value;
-                if (firm) {
-                    await fetchPropFirmDetails(firm);
-                    populateAccountSizes(firm);
-                    updateContributions();
-                } else {
-                    accountSize.innerHTML = '<option value="">Select Account Size</option>';
-                    updateContributions();
-                }
-            });
             accountSize.addEventListener('change', updateContributions);
 
-            // Form submission (Submit Request button)
+            // Form submission
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
@@ -294,16 +253,15 @@
                     return;
                 }
 
-                const firm = propFirm.value;
                 const size = accountSize.value;
 
-                if (firm && size) {
-                    const price = await getPrice(firm, size);
+                if (size) {
+                    const price = await getPrice(size);
                     const requesterShare = (price * 70) / 100; // Fixed 70/30 split
                     result.textContent = `Request submitted! Your contribution of $${requesterShare.toFixed(2)} is locked.`;
                     result.className = '';
                 } else {
-                    result.textContent = 'Please select a prop firm and account size.';
+                    result.textContent = 'Please select an account size.';
                     result.className = 'error';
                 }
             });
