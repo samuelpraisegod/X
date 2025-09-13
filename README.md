@@ -12,38 +12,36 @@
             margin: 0;
         }
         h2 { text-align: center; color: #333; }
-        .section { margin: 40px 0; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .section { margin: 40px 0; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 1200px; margin-left: auto; margin-right: auto; }
         /* Menu Tabs */
-        .tabs { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
-            margin-bottom: 20px; 
-            max-width: 1200px; 
-            margin-left: auto; 
-            margin-right: auto;
-        }
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .tab { 
-            padding: 12px 24px; 
-            background: #e9ecef; 
-            border-radius: 8px 8px 0 0; 
+            padding: 10px 20px; 
             cursor: pointer; 
+            background: #e9ecef; 
+            border-radius: 6px 6px 0 0; 
             font-weight: bold; 
-            color: #555; 
+            color: #333; 
             transition: background 0.2s;
         }
-        .tab.active { 
-            background: white; 
-            color: #007bff; 
-            border-bottom: 2px solid #007bff; 
-        }
-        .tab:hover { background: #dee2e6; }
-        .tab-content { 
-            display: none; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-        }
+        .tab.active { background: white; border-bottom: 2px solid #007bff; color: #007bff; }
+        .tab:hover { background: #d3d7db; }
+        .tab-content { display: none; }
         .tab-content.active { display: block; }
+        /* Filter Bar */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; }
+        .filter-bar select, .filter-bar input, .filter-bar button { 
+            padding: 8px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 0.9em;
+        }
+        .filter-bar button { background: #007bff; color: white; cursor: pointer; }
+        .filter-bar button:hover { background: #0056b3; }
+        .filter-bar .toggle { display: flex; align-items: center; gap: 5px; }
+        .filter-bar input[type="checkbox"] { width: auto; }
+        .filter-bar input[type="text"] { width: 200px; }
+        .counts { text-align: center; margin: 10px 0; font-size: 1em; color: #333; font-weight: bold; }
         /* Table Styles */
         .table-container { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
@@ -62,6 +60,7 @@
             display: inline-block; 
         }
         .action-btn:hover { background: #0056b3; }
+        /* Firm Column Clickable */
         .firm-name { 
             color: #007bff; 
             cursor: pointer; 
@@ -105,160 +104,91 @@
             margin-top: 10px;
         }
         .firm-details button:hover { background: #218838; }
-        /* Filter Bar */
-        .filter-bar { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 10px; 
-            align-items: center; 
-            margin: 20px auto; 
-            max-width: 1200px; 
-            padding: 10px; 
-            background: #fff; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .filter-bar select, .filter-bar input, .filter-bar button { 
-            padding: 8px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            font-size: 0.9em;
-        }
-        .filter-bar button { 
-            background: #007bff; 
-            color: white; 
-            cursor: pointer; 
-        }
-        .filter-bar button:hover { background: #0056b3; }
-        .filter-bar .toggle { 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-        }
-        .filter-bar .toggle input { 
-            width: 40px; 
-            height: 20px; 
-        }
-        .filter-bar .search-bar { 
-            flex-grow: 1; 
-            padding: 8px; 
-            width: 100%; 
-            max-width: 300px;
-        }
-        .counts { 
-            text-align: center; 
-            margin: 10px 0; 
-            font-size: 1em; 
-            color: #333; 
-            font-weight: bold; 
-            background: #e7f3ff; 
-            padding: 10px; 
-            border-radius: 6px; 
-            max-width: 1200px; 
-            margin-left: auto; 
-            margin-right: auto;
-        }
         @media (max-width: 600px) {
             .tabs { flex-direction: column; align-items: center; }
-            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-bar { flex-direction: column; }
             th, td { padding: 8px 4px; font-size: 0.85em; }
             .firm-details { padding: 10px; }
-            .filter-bar select, .filter-bar input, .filter-bar button { width: 100%; }
+            .filter-bar input[type="text"] { width: 100%; }
         }
     </style>
 </head>
 <body>
     <!-- Menu Tabs -->
     <div class="tabs">
-        <div class="tab active" data-tab="firms">Firms</div>
-        <div class="tab" data-tab="challenges">Challenges</div>
+        <div class="tab" data-tab="firms">Firms</div>
+        <div class="tab active" data-tab="challenges">Challenges</div>
         <div class="tab" data-tab="offers">Offers</div>
         <div class="tab" data-tab="reviews">Reviews</div>
     </div>
 
     <!-- Tab Content -->
-    <div id="firms" class="tab-content active">
-        <section id="prop-firms-table" class="section">
-            <h2>Prop Firms Overview</h2>
-            <p>Compare top prop firms. Click the firm name for more details. (Static for demo; will fetch from API later.)</p>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Firm</th>
-                            <th>Rank / Reviews</th>
-                            <th>Country</th>
-                            <th>Years in Operation</th>
-                            <th>Assets</th>
-                            <th>Platforms</th>
-                            <th>Max Allocations</th>
-                            <th>Promo</th>
-                            <th>Profit Split</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <!-- Static row populated by JS below -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
+    <div id="firms" class="tab-content section">
+        <h2>Prop Firms Overview</h2>
+        <p>Compare top prop firms. Click the firm name for more details. (Static for demo; will fetch from API later.)</p>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Firm</th>
+                        <th>Rank / Reviews</th>
+                        <th>Country</th>
+                        <th>Years in Operation</th>
+                        <th>Assets</th>
+                        <th>Platforms</th>
+                        <th>Max Allocations</th>
+                        <th>Promo</th>
+                        <th>Profit Split</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Static row populated by JS below -->
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div id="challenges" class="tab-content">
-        <section class="section">
-            <h2>Challenges</h2>
-            <p>Explore trading challenges from top prop firms. (Placeholder; will fetch from API later.)</p>
-            <!-- Sample challenge content -->
-            <div class="challenge-item">
-                <h3>FTMO Challenge</h3>
-                <p>Two-phase evaluation, up to $200K account, 90% profit split.</p>
-                <a href="https://ftmo.com/en/affiliate-program/?ref=yourid" target="_blank" rel="noopener noreferrer">
-                    <button>Start Challenge</button>
-                </a>
-            </div>
-        </section>
+    <div id="challenges" class="tab-content section active">
+        <h2>Challenges</h2>
+        <p>View available trading challenges. (Static placeholder; will fetch from /api/challenges later.)</p>
+        <!-- Placeholder for challenge list/table -->
+        <p>No challenges available yet. Connect to API for dynamic data.</p>
     </div>
-    <div id="offers" class="tab-content">
-        <section class="section">
-            <h2>Offers</h2>
-            <p>View special offers from prop firms. (Placeholder for future content.)</p>
-        </section>
+    <div id="offers" class="tab-content section">
+        <h2>Offers</h2>
+        <p>View special offers from prop firms. (Placeholder for future content.)</p>
     </div>
-    <div id="reviews" class="tab-content">
-        <section class="section">
-            <h2>Reviews</h2>
-            <p>Read user reviews of prop firms. (Placeholder for future content.)</p>
-        </section>
+    <div id="reviews" class="tab-content section">
+        <h2>Reviews</h2>
+        <p>Read user reviews for prop firms. (Placeholder for future content.)</p>
     </div>
 
     <!-- Filter Bar -->
     <div class="filter-bar">
-        <div class="filter-dropdown">
-            <select>
-                <option value="">Filter</option>
-                <option value="top-rated">Top Rated</option>
-                <option value="newest">Newest</option>
-                <option value="highest-split">Highest Profit Split</option>
-            </select>
-        </div>
+        <select>
+            <option value="">Filter</option>
+            <option value="profit_split">Profit Split</option>
+            <option value="country">Country</option>
+            <option value="years">Years in Operation</option>
+        </select>
         <select>
             <option value="">Assets</option>
-            <option value="fx">Forex</option>
-            <option value="crypto">Crypto</option>
-            <option value="indices">Indices</option>
-            <option value="commodities">Commodities</option>
+            <option value="FX">FX</option>
+            <option value="Crypto">Crypto</option>
+            <option value="Indices">Indices</option>
+            <option value="Commodities">Commodities</option>
         </select>
         <select>
             <option value="">Size</option>
-            <option value="50k">$50K</option>
-            <option value="100k">$100K</option>
-            <option value="200k">$200K</option>
-            <option value="400k">$400K</option>
+            <option value="10K">$10K</option>
+            <option value="50K">$50K</option>
+            <option value="100K">$100K</option>
+            <option value="200K">$200K</option>
         </select>
         <select>
             <option value="">Steps</option>
-            <option value="1-step">1 Step</option>
-            <option value="2-steps">2 Steps</option>
+            <option value="1">1 Step</option>
+            <option value="2">2 Steps</option>
         </select>
         <div class="toggle">
             <label>Apply Discount</label>
@@ -266,10 +196,10 @@
         </div>
         <button>All</button>
         <button>Bookmarks</button>
-        <input type="text" class="search-bar" placeholder="Search for Challenges">
+        <input type="text" placeholder="Search for Challenges">
     </div>
 
-    <!-- Counts -->
+    <!-- Total Counts -->
     <div class="counts">
         Total Challenges: 0 | Total Firms: 1
     </div>
