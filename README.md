@@ -147,50 +147,12 @@
             margin-top: 10px;
         }
         .firm-details button:hover { background: #e63e3e; }
-        /* Offer Card */
-        .offer-card { 
-            display: flex; 
-            justify-content: space-between; 
-            background: white; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            padding: 15px; 
-            margin: 10px 0; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-        }
-        .offer-card-left { flex: 1; }
-        .offer-card-right { 
-            flex: 0 0 200px; 
-            background: #f8f9fa; 
-            padding: 10px; 
-            border-radius: 6px; 
-            text-align: center; 
-            margin-left: 10px;
-        }
-        .offer-card img { max-width: 80px; height: auto; border-radius: 50%; }
-        .offer-card h3 { font-size: 1.3em; margin: 10px 0; }
-        .offer-card .rating { color: #6f42c1; font-size: 0.9em; }
-        .offer-card .stars { color: #ffc107; }
-        .offer-card .discount { font-weight: bold; color: #dc3545; font-size: 1.1em; }
-        .offer-card .description { font-size: 0.9em; color: #555; }
-        .offer-card-bottom { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-top: 10px; 
-            border-top: 1px solid #ddd; 
-            padding-top: 10px;
-        }
-        .offer-card .promo-code { font-size: 0.9em; font-weight: bold; }
-        .offer-card .copy-icon { cursor: pointer; color: #9b59b6; margin-left: 5px; }
         @media (max-width: 600px) {
             .tabs { flex-direction: column; align-items: center; }
             .filter-bar { flex-direction: column; }
             .filter-bar input[type="text"] { width: 100%; }
             .challenges-table th, .challenges-table td, .firms-table th, .firms-table td { padding: 8px 4px; font-size: 0.85em; }
-            .firm-details, .offer-card { padding: 10px; }
-            .offer-card { flex-direction: column; }
-            .offer-card-right { margin-left: 0; margin-top: 10px; }
+            .firm-details { padding: 10px; }
         }
     </style>
 </head>
@@ -281,18 +243,7 @@
     </div>
     <div id="offers" class="tab-content section">
         <h2>Special Offers</h2>
-        <p>Discover the latest offers from top prop firms. (Static for demo; will fetch from /api/offers later.)</p>
-        <div class="offer-filter-bar">
-            <div>
-                <button>September Offers 🔥</button>
-                <button class="active">Exclusive Offers</button>
-                <button>All Current Offers</button>
-            </div>
-            <input type="text" placeholder="Search for Offers">
-        </div>
-        <div id="offers-container">
-            <!-- Static offer card populated by JS -->
-        </div>
+        <p>Discover the latest offers from prop firms. (Placeholder for future content.)</p>
     </div>
     <div id="reviews" class="tab-content section">
         <h2>Reviews</h2>
@@ -301,11 +252,11 @@
 
     <!-- Total Counts -->
     <div class="counts">
-        Total Challenges: 2 | Total Firms: 1 | Total Offers: 1
+        Total Challenges: 2 | Total Firms: 1
     </div>
 
     <script>
-        // Static Firms Data (FTMO)
+        // Static Firms Data (FTMO from provided code)
         const firmsTableData = [
             {
                 id: 1,
@@ -428,52 +379,12 @@
             challengesTableBody.appendChild(tr);
         });
 
-        // Static Offer Data (FTMO)
-        const offersData = [
-            {
-                id: 1,
-                firm: 'FTMO',
-                logo: 'https://ftmo.com/wp-content/themes/ftmo/assets/images/ftmo-logo-white.svg',
-                rating: '4.8',
-                reviews: '25K+',
-                discount: '25% OFF',
-                description: '25% OFF all challenge accounts',
-                promoCode: 'MATCH',
-                affiliateLink: 'https://ftmo.com/en/affiliate-program/?ref=yourid'
-            }
-        ];
-
-        // Render Offer Cards
-        const offersContainer = document.getElementById('offers-container');
-        offersData.forEach(offer => {
-            const card = document.createElement('div');
-            card.className = 'offer-card';
-            card.innerHTML = `
-                <div class="offer-card-left">
-                    <img src="${offer.logo}" alt="${offer.firm} Logo" onerror="this.src='https://via.placeholder.com/80x80/CCCCCC/FFFFFF?text=${offer.firm.charAt(0)}';">
-                    <h3>${offer.firm}</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★★</span> ${offer.rating} (${offer.reviews})
-                    </div>
-                </div>
-                <div class="offer-card-right">
-                    <div class="discount">${offer.discount}</div>
-                    <div class="description">${offer.description}</div>
-                </div>
-                <div class="offer-card-bottom">
-                    <div class="promo-code">Promo: ${offer.promoCode} <span class="copy-icon">📋</span></div>
-                    <a href="${offer.affiliateLink}" target="_blank" rel="noopener noreferrer" class="buy-btn">Buy Now</a>
-                </div>
-            `;
-            offersContainer.appendChild(card);
-        });
-
         // Toggle Firm Details on Click
         document.querySelectorAll('.firm-name').forEach(firm => {
             firm.addEventListener('click', () => {
                 const firmId = firm.getAttribute('data-firm-id');
                 const details = document.getElementById(`details-${firmId}`);
-                details.classList.toggle('active');
+                if (details) details.classList.toggle('active');
             });
         });
 
@@ -491,13 +402,6 @@
         document.querySelectorAll('.bookmark').forEach(bookmark => {
             bookmark.addEventListener('click', () => {
                 alert('Bookmark functionality to be implemented!');
-            });
-        });
-
-        // Copy Icon (Placeholder)
-        document.querySelectorAll('.copy-icon').forEach(icon => {
-            icon.addEventListener('click', () => {
-                alert('Copy promo code functionality to be implemented!');
             });
         });
     </script>
