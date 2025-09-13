@@ -3,176 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prop Firm Brokers - 2025 Demo</title>
+    <title>Prop Firm Challenges - 2025 Demo</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
-            background-color: #f4f4f4; 
+            background-color: #1a1a1a; 
+            color: #fff; 
             padding: 20px; 
             margin: 0;
         }
-        h2 { text-align: center; color: #333; }
-        .section { margin: 40px 0; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 1200px; margin-left: auto; margin-right: auto; }
+        h2 { text-align: center; color: #fff; }
+        .section { margin: 40px 0; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); max-width: 1200px; margin-left: auto; margin-right: auto; }
         /* Menu Tabs */
         .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .tab { 
             padding: 10px 20px; 
             cursor: pointer; 
-            background: #e9ecef; 
+            background: #333; 
             border-radius: 6px 6px 0 0; 
             font-weight: bold; 
-            color: #333; 
+            color: #ccc; 
             transition: background 0.2s;
         }
-        .tab.active { background: white; border-bottom: 2px solid #007bff; color: #007bff; }
-        .tab:hover { background: #d3d7db; }
+        .tab.active { background: white; border-bottom: 2px solid #9b59b6; color: #9b59b6; }
+        .tab:hover { background: #444; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        /* Filter Bar (Firms) */
-        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px; }
+        /* Filter Bar (Challenges) */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .filter-bar select, .filter-bar input, .filter-bar button { 
             padding: 8px; 
-            border: 1px solid #ddd; 
+            border: 1px solid #444; 
             border-radius: 4px; 
-            font-size: 0.9em;
-        }
-        .filter-bar button { background: #007bff; color: white; cursor: pointer; }
-        .filter-bar button:hover { background: #0056b3; }
-        .filter-bar .toggle { display: flex; align-items: center; gap: 5px; }
-        .filter-bar input[type="checkbox"] { width: auto; }
-        .filter-bar input[type="text"] { width: 200px; }
-        /* Offer Filter Bar */
-        .offer-filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .offer-filter-bar button { 
-            padding: 8px 16px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 0.9em;
-            background: #f8f9fa;
-        }
-        .offer-filter-bar button.active { background: #007bff; color: white; }
-        .offer-filter-bar button:hover { background: #e9ecef; }
-        .offer-filter-bar button.active:hover { background: #0056b3; }
-        .offer-filter-bar input[type="text"] { width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        /* Counts */
-        .counts { text-align: center; margin: 10px 0; font-size: 1em; color: #333; font-weight: bold; }
-        /* Table Styles (Firms) */
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #f8f9fa; font-weight: bold; color: #333; }
-        tr:hover { background: #f5f5f5; }
-        .promo { background: #d4edda; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; }
-        .action-btn { 
-            background: #007bff; 
-            color: white; 
-            border: none; 
-            padding: 8px 16px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            text-decoration: none; 
-            display: inline-block; 
-        }
-        .action-btn:hover { background: #0056b3; }
-        /* Firm Column Clickable */
-        .firm-name { 
-            color: #007bff; 
-            cursor: pointer; 
-            text-decoration: underline; 
-        }
-        .firm-name:hover { color: #0056b3; }
-        .firm-details { 
-            display: none; 
-            padding: 15px; 
-            background: #f9f9f9; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            margin: 10px 0; 
-            text-align: center;
-        }
-        .firm-details.active { display: block; }
-        .firm-details img { 
-            max-width: 100px; 
-            height: auto; 
-            border-radius: 50%; 
-            margin-bottom: 10px;
-        }
-        .firm-details h3 { 
-            font-size: 1.4em; 
-            color: #007bff; 
-            margin: 10px 0;
-        }
-        .firm-details p { 
             font-size: 0.9em; 
-            color: #555; 
-            line-height: 1.4;
+            background: #333; 
+            color: #fff;
         }
-        .firm-details button { 
-            background: #28a745; 
-            color: white; 
-            border: none; 
-            padding: 12px 24px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-size: 1em;
-            margin-top: 10px;
+        .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: #9b59b6; }
+        .filter-bar button { background: #9b59b6; cursor: pointer; }
+        .filter-bar button:hover { background: #8e44ad; }
+        .filter-bar .filter-btn::before { content: '⚙️'; margin-right: 5px; }
+        .filter-bar .all-btn { border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .filter-bar .bookmark-btn::before { content: '🔖'; }
+        .filter-bar .toggle { display: flex; align-items: center; gap: 5px; }
+        .filter-bar input[type="checkbox"] { 
+            appearance: none; 
+            width: 40px; 
+            height: 20px; 
+            background: #444; 
+            border-radius: 10px; 
+            position: relative; 
+            cursor: pointer;
         }
-        .firm-details button:hover { background: #218838; }
-        /* Offer Card */
-        .offer-card { 
-            display: flex; 
-            justify-content: space-between; 
+        .filter-bar input[type="checkbox"]:checked { background: #ff4d4d; }
+        .filter-bar input[type="checkbox"]::before { 
+            content: ''; 
+            position: absolute; 
+            width: 16px; 
+            height: 16px; 
             background: white; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            padding: 15px; 
-            margin: 10px 0; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            border-radius: 50%; 
+            top: 2px; 
+            left: 2px; 
+            transition: transform 0.2s;
         }
-        .offer-card-left { flex: 1; }
-        .offer-card-right { 
-            flex: 0 0 200px; 
-            background: #f8f9fa; 
-            padding: 10px; 
-            border-radius: 6px; 
-            text-align: center; 
-            margin-left: 10px;
-        }
-        .offer-card img { max-width: 80px; height: auto; border-radius: 50%; }
-        .offer-card h3 { font-size: 1.3em; margin: 10px 0; }
-        .offer-card .rating { color: #6f42c1; font-size: 0.9em; }
-        .offer-card .stars { color: #ffc107; }
-        .offer-card .discount { font-weight: bold; color: #dc3545; font-size: 1.1em; }
-        .offer-card .description { font-size: 0.9em; color: #555; }
-        .offer-card-bottom { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-top: 10px; 
-            border-top: 1px solid #ddd; 
-            padding-top: 10px;
-        }
-        .offer-card .promo-code { font-size: 0.9em; font-weight: bold; }
-        .offer-card .copy-icon { cursor: pointer; color: #007bff; margin-left: 5px; }
-        .offer-card .buy-btn { 
+        .filter-bar input[type="checkbox"]:checked::before { transform: translateX(20px); }
+        .filter-bar input[type="text"] { width: 200px; background: #333; }
+        /* Challenges Table */
+        .challenges-table { width: 100%; border-collapse: collapse; }
+        .challenges-table th, .challenges-table td { padding: 12px; text-align: left; border-bottom: 1px solid #444; }
+        .challenges-table th { background: #2c2c2c; font-weight: bold; color: #fff; }
+        .challenges-table tr:hover { background: #2a2a2a; }
+        .challenge-row { display: flex; align-items: center; justify-content: space-between; }
+        .challenge-left { flex: 0 0 200px; display: flex; flex-direction: column; align-items: flex-start; }
+        .challenge-left img { max-width: 60px; height: auto; border-radius: 50%; margin-bottom: 5px; }
+        .challenge-left h3 { font-size: 1.2em; margin: 5px 0; color: #fff; }
+        .challenge-left .rating { background: #6f42c1; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; }
+        .challenge-left .stars { color: #ffc107; }
+        .challenge-left .bookmark { cursor: pointer; color: #9b59b6; font-size: 1.2em; }
+        .challenge-middle { flex: 1; display: flex; justify-content: space-around; }
+        .challenge-middle div { flex: 1; text-align: center; }
+        .challenge-right { flex: 0 0 200px; text-align: right; }
+        .challenge-right .price { font-size: 1.1em; font-weight: bold; color: #fff; }
+        .challenge-right .old-price { text-decoration: line-through; color: #888; font-size: 0.9em; }
+        .challenge-right .buy-btn { 
             background: linear-gradient(to right, #ff4d4d, #ff8c8c); 
             color: white; 
             border: none; 
             padding: 8px 16px; 
-            border-radius: 6px; 
+            border-radius: 20px; 
             cursor: pointer; 
+            margin-top: 5px; 
+            display: inline-block; 
             text-decoration: none;
         }
-        .offer-card .buy-btn:hover { background: linear-gradient(to right, #e63e3e, #ff6b6b); }
+        .challenge-right .buy-btn:hover { background: linear-gradient(to right, #e63e3e, #ff6b6b); }
+        /* Counts */
+        .counts { text-align: center; margin: 10px 0; font-size: 1em; color: #fff; font-weight: bold; }
         @media (max-width: 600px) {
             .tabs { flex-direction: column; align-items: center; }
-            .filter-bar, .offer-filter-bar { flex-direction: column; }
-            .offer-filter-bar input[type="text"] { width: 100%; }
-            th, td { padding: 8px 4px; font-size: 0.85em; }
-            .firm-details { padding: 10px; }
-            .offer-card { flex-direction: column; }
-            .offer-card-right { margin-left: 0; margin-top: 10px; }
+            .filter-bar { flex-direction: column; }
+            .filter-bar input[type="text"] { width: 100%; }
+            .challenges-table th, .challenges-table td { padding: 8px 4px; font-size: 0.85em; }
+            .challenge-row { flex-direction: column; align-items: flex-start; }
+            .challenge-right { text-align: left; margin-top: 10px; }
         }
     </style>
 </head>
@@ -180,21 +114,21 @@
     <!-- Menu Tabs -->
     <div class="tabs">
         <div class="tab" data-tab="firms">Firms</div>
-        <div class="tab active" data-tab="offers">Offers</div>
+        <div class="tab active" data-tab="challenges">Challenges</div>
+        <div class="tab" data-tab="offers">Offers</div>
         <div class="tab" data-tab="reviews">Reviews</div>
     </div>
 
     <!-- Tab Content -->
     <div id="firms" class="tab-content section">
         <h2>Prop Firms Overview</h2>
-        <p>Compare top prop firms. Click the firm name for more details. (Static for demo; will fetch from API later.)</p>
+        <p>Compare top prop firms. (Placeholder; will fetch from /api/firms.)</p>
+    </div>
+    <div id="challenges" class="tab-content section active">
+        <h2>Challenges</h2>
+        <p>Explore trading challenges from top prop firms. (Static for demo; will fetch from /api/challenges.)</p>
         <div class="filter-bar">
-            <select>
-                <option value="">Filter</option>
-                <option value="profit_split">Profit Split</option>
-                <option value="country">Country</option>
-                <option value="years">Years in Operation</option>
-            </select>
+            <button class="filter-btn">Filter</button>
             <select>
                 <option value="">Assets</option>
                 <option value="FX">FX</option>
@@ -218,46 +152,31 @@
                 <label>Apply Discount</label>
                 <input type="checkbox">
             </div>
-            <button>All</button>
-            <button>Bookmarks</button>
+            <button class="all-btn">All</button>
+            <button class="bookmark-btn"></button>
             <input type="text" placeholder="Search for Challenges">
         </div>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Firm</th>
-                        <th>Rank / Reviews</th>
-                        <th>Country</th>
-                        <th>Years in Operation</th>
-                        <th>Assets</th>
-                        <th>Platforms</th>
-                        <th>Max Allocations</th>
-                        <th>Promo</th>
-                        <th>Profit Split</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <!-- Static row populated by JS below -->
-                </tbody>
-            </table>
+        <div class="challenges-table">
+            <div class="challenge-row" style="background: #2c2c2c; font-weight: bold;">
+                <div class="challenge-left">Firm / Rank</div>
+                <div class="challenge-middle">
+                    <div>Account Size</div>
+                    <div>Steps</div>
+                    <div>Profit Target</div>
+                    <div>Daily Loss</div>
+                    <div>Max Loss</div>
+                    <div>Profit Split</div>
+                    <div>PA</div>
+                </div>
+                <div class="challenge-right">Price</div>
+            </div>
+            <!-- Static rows populated by JS below -->
+            <div id="challenges-body"></div>
         </div>
     </div>
-    <div id="offers" class="tab-content section active">
-        <h2>Special Offers</h2>
-        <p>Discover the latest offers from top prop firms. (Static for demo; will fetch from /api/offers later.)</p>
-        <div class="offer-filter-bar">
-            <div>
-                <button>September Offers 🔥</button>
-                <button class="active">Exclusive Offers</button>
-                <button>All Current Offers</button>
-            </div>
-            <input type="text" placeholder="Search for Offers">
-        </div>
-        <div id="offers-container">
-            <!-- Static offer card populated by JS below -->
-        </div>
+    <div id="offers" class="tab-content section">
+        <h2>Offers</h2>
+        <p>Discover special offers from prop firms. (Placeholder for future content.)</p>
     </div>
     <div id="reviews" class="tab-content section">
         <h2>Reviews</h2>
@@ -266,112 +185,75 @@
 
     <!-- Total Counts -->
     <div class="counts">
-        Total Offers: 1 | Total Firms: 1
+        Total Challenges: 2 | Total Firms: 0
     </div>
 
     <script>
-        // Static Table Data (Firms - FTMO only for demo)
-        const firmsTableData = [
+        // Static Challenges Data (FundingPips, The5%ers)
+        const challengesData = [
             {
                 id: 1,
-                firm: 'FTMO',
-                rankReviews: '1 / 4.8 (25K+)',
-                country: 'Czech Republic',
-                years: '10',
-                assets: 'Forex, Indices, Commodities, Crypto',
-                platforms: 'MT4, MT5, cTrader',
-                maxAllocations: '$2,000,000',
-                promo: '25% Off Challenges',
-                profitSplit: 'Up to 90%',
-                affiliateLink: 'https://ftmo.com/en/affiliate-program/?ref=yourid',
-                description: 'Leading prop firm for forex traders with two-phase challenges, scaling up to $2M, and support for MT4/MT5/cTrader platforms.',
-                logo: 'https://ftmo.com/wp-content/themes/ftmo/assets/images/ftmo-logo-white.svg'
-            }
-        ];
-
-        // Render Firms Table Rows
-        const tableBody = document.getElementById('table-body');
-        firmsTableData.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><span class="firm-name" data-firm-id="${row.id}">${row.firm}</span></td>
-                <td>${row.rankReviews}</td>
-                <td>${row.country}</td>
-                <td>${row.years}</td>
-                <td>${row.assets}</td>
-                <td>${row.platforms}</td>
-                <td>${row.maxAllocations}</td>
-                <td><span class="promo">${row.promo}</span></td>
-                <td>${row.profitSplit}</td>
-                <td><a href="${row.affiliateLink}" target="_blank" rel="noopener noreferrer" class="action-btn">View Details</a></td>
-            `;
-            tableBody.appendChild(tr);
-
-            // Add hidden details row
-            const detailsRow = document.createElement('tr');
-            detailsRow.innerHTML = `
-                <td colspan="10">
-                    <div class="firm-details" id="details-${row.id}">
-                        <img src="${row.logo}" alt="${row.firm} Logo" onerror="this.src='https://via.placeholder.com/100x100/CCCCCC/FFFFFF?text=${row.firm.charAt(0)}';">
-                        <h3>${row.firm}</h3>
-                        <p>${row.description}</p>
-                        <p><strong>Profit Split:</strong> ${row.profitSplit}</p>
-                        <a href="${row.affiliateLink}" target="_blank" rel="noopener noreferrer">
-                            <button>Visit Broker</button>
-                        </a>
-                    </div>
-                </td>
-            `;
-            tableBody.appendChild(tr);
-        });
-
-        // Toggle Firm Details on Click
-        document.querySelectorAll('.firm-name').forEach(firm => {
-            firm.addEventListener('click', () => {
-                const firmId = firm.getAttribute('data-firm-id');
-                const details = document.getElementById(`details-${firmId}`);
-                details.classList.toggle('active');
-            });
-        });
-
-        // Static Offer Data (FTMO example)
-        const offersData = [
+                firm: 'FundingPips',
+                logo: 'https://via.placeholder.com/60x60/CCCCCC/FFFFFF?text=FP',
+                rating: '4.7',
+                reviews: '18K+',
+                accountSize: '$100K',
+                steps: '2 Steps',
+                profitTarget: '6% / 6%',
+                dailyLoss: '3%',
+                maxLoss: '6%',
+                profitSplit: '80%',
+                pa: 'MT5',
+                price: '$379.05',
+                oldPrice: '$399.00',
+                affiliateLink: 'https://fundingpips.com/affiliate?ref=yourid'
+            },
             {
-                id: 1,
-                firm: 'FTMO',
-                logo: 'https://ftmo.com/wp-content/themes/ftmo/assets/images/ftmo-logo-white.svg',
+                id: 2,
+                firm: 'The5%ers',
+                logo: 'https://the5ers.com/wp-content/uploads/2023/05/the5ers-logo-white.png',
                 rating: '4.8',
-                reviews: '25K+',
-                discount: '25% OFF',
-                description: '25% OFF all challenge accounts',
-                promoCode: 'MATCH',
-                affiliateLink: 'https://ftmo.com/en/affiliate-program/?ref=yourid'
+                reviews: '12K+',
+                accountSize: '$100K',
+                steps: '2 Steps',
+                profitTarget: '10% / 5%',
+                dailyLoss: '5%',
+                maxLoss: '10%',
+                profitSplit: '100%',
+                pa: 'MT5',
+                price: '$495.00',
+                oldPrice: '$525.00',
+                affiliateLink: 'https://the5ers.com/affiliate-program/?ref=yourid'
             }
         ];
 
-        // Render Offer Cards
-        const offersContainer = document.getElementById('offers-container');
-        offersData.forEach(offer => {
-            const card = document.createElement('div');
-            card.className = 'offer-card';
-            card.innerHTML = `
-                <div class="offer-card-left">
-                    <img src="${offer.logo}" alt="${offer.firm} Logo" onerror="this.src='https://via.placeholder.com/80x80/CCCCCC/FFFFFF?text=${offer.firm.charAt(0)}';">
-                    <h3>${offer.firm}</h3>
-                    <div class="rating">
-                        <span class="stars">★★★★★</span> ${offer.rating} (${offer.reviews})
-                    </div>
+        // Render Challenges Table Rows
+        const challengesBody = document.getElementById('challenges-body');
+        challengesData.forEach(challenge => {
+            const row = document.createElement('div');
+            row.className = 'challenge-row';
+            row.innerHTML = `
+                <div class="challenge-left">
+                    <img src="${challenge.logo}" alt="${challenge.firm} Logo" onerror="this.src='https://via.placeholder.com/60x60/CCCCCC/FFFFFF?text=${challenge.firm.charAt(0)}';">
+                    <h3>${challenge.firm}</h3>
+                    <div class="rating"><span class="stars">★★★★★</span> ${challenge.rating} (${challenge.reviews})</div>
+                    <span class="bookmark">🔖</span>
                 </div>
-                <div class="offer-card-right">
-                    <div class="discount">${offer.discount}</div>
-                    <div class="description">${offer.description}</div>
+                <div class="challenge-middle">
+                    <div>${challenge.accountSize}</div>
+                    <div>${challenge.steps}</div>
+                    <div>${challenge.profitTarget}</div>
+                    <div>${challenge.dailyLoss}</div>
+                    <div>${challenge.maxLoss}</div>
+                    <div>${challenge.profitSplit}</div>
+                    <div>${challenge.pa}</div>
                 </div>
-                <div class="offer-card-bottom">
-                    <div class="promo-code">Promo: ${offer.promoCode} <span class="copy-icon">📋</span></div>
-                    <a href="${offer.affiliateLink}" target="_blank" rel="noopener noreferrer" class="buy-btn">Buy Now</a>
+                <div class="challenge-right">
+                    <div class="price">${challenge.price} <span class="old-price">${challenge.oldPrice}</span></div>
+                    <a href="${challenge.affiliateLink}" target="_blank" rel="noopener noreferrer" class="buy-btn">Buy Now</a>
                 </div>
             `;
-            offersContainer.appendChild(card);
+            challengesBody.appendChild(row);
         });
 
         // Tab Switching
@@ -384,10 +266,10 @@
             });
         });
 
-        // Copy Icon (Placeholder - Add clipboard functionality)
-        document.querySelectorAll('.copy-icon').forEach(icon => {
-            icon.addEventListener('click', () => {
-                alert('Copy promo code functionality to be implemented!');
+        // Bookmark (Placeholder)
+        document.querySelectorAll('.bookmark').forEach(bookmark => {
+            bookmark.addEventListener('click', () => {
+                alert('Bookmark functionality to be implemented!');
             });
         });
     </script>
