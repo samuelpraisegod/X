@@ -93,25 +93,6 @@
             padding: 15px;
             border-radius: 4px;
             margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-        #contributionDetails .breakdown {
-            flex: 1;
-        }
-        #buyButton {
-            background-color: #28a745;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            cursor: pointer;
-            margin-left: 20px;
-        }
-        #buyButton:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
         }
         #result {
             color: green;
@@ -153,14 +134,11 @@
                 <p>70/30</p>
 
                 <div id="contributionDetails">
-                    <div class="breakdown">
-                        <h3>showTab - Contribution Breakdown</h3>
-                        <p><strong>Account Price:</strong> <span id="accountPrice">TBD</span></p>
-                        <p><strong>Profit Split:</strong> <span id="selectedProfitSplit">70/30</span></p>
-                        <p><strong>Requester Contribution:</strong> <span id="requesterContribution">TBD</span></p>
-                        <p><strong>Partner Contribution:</strong> <span id="partnerContribution">TBD</span></p>
-                    </div>
-                    <button type="button" id="buyButton">Buy</button>
+                    <h3>showTab - Contribution Breakdown</h3>
+                    <p><strong>Account Price:</strong> <span id="accountPrice">TBD</span></p>
+                    <p><strong>Profit Split:</strong> <span id="selectedProfitSplit">70/30</span></p>
+                    <p><strong>Requester Contribution:</strong> <span id="requesterContribution">TBD</span></p>
+                    <p><strong>Partner Contribution:</strong> <span id="partnerContribution">TBD</span></p>
                 </div>
 
                 <button type="submit" id="submitButton">Submit Request</button>
@@ -181,7 +159,6 @@
             const calculatorToggle = document.getElementById('calculatorToggle');
             const toggleStatus = document.getElementById('toggleStatus');
             const submitButton = document.getElementById('submitButton');
-            const buyButton = document.getElementById('buyButton');
             const contributionDetails = document.getElementById('contributionDetails');
 
             // Simulated API data for prop firms (replace with actual API in production)
@@ -280,8 +257,7 @@
                 propFirm.disabled = !isEnabled;
                 accountSize.disabled = !isEnabled;
                 submitButton.disabled = !isEnabled;
-                buyButton.disabled = !isEnabled;
-                contributionDetails.style.display = isEnabled ? 'flex' : 'none';
+                contributionDetails.style.display = isEnabled ? 'block' : 'none';
                 if (isEnabled) {
                     updateContributions();
                 } else {
@@ -325,28 +301,6 @@
                     const price = await getPrice(firm, size);
                     const requesterShare = (price * 70) / 100; // Fixed 70/30 split
                     result.textContent = `Request submitted! Your contribution of $${requesterShare.toFixed(2)} is locked.`;
-                    result.className = '';
-                } else {
-                    result.textContent = 'Please select a prop firm and account size.';
-                    result.className = 'error';
-                }
-            });
-
-            // Buy button (same action as submit)
-            buyButton.addEventListener('click', async () => {
-                if (!calculatorToggle.checked) {
-                    result.textContent = 'Co-Funding is turned off. Please turn it on to buy.';
-                    result.className = 'error';
-                    return;
-                }
-
-                const firm = propFirm.value;
-                const size = accountSize.value;
-
-                if (firm && size) {
-                    const price = await getPrice(firm, size);
-                    const requesterShare = (price * 70) / 100; // Fixed 70/30 split
-                    result.textContent = `Purchase confirmed! Your contribution of $${requesterShare.toFixed(2)} is locked.`;
                     result.className = '';
                 } else {
                     result.textContent = 'Please select a prop firm and account size.';
