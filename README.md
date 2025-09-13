@@ -25,11 +25,11 @@
             color: #fff; 
             transition: background 0.2s;
         }
-        .tab.active { background: white; color: #9b59b6; border-bottom: 2px solid #9b59b6; }
+        .tab.active { background: white; color: #9b59b6; }
         .tab:hover { background: #444; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        /* Filter Bar (Challenges) */
+        /* Filter Bar (Challenges/Firms) */
         .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .filter-bar select, .filter-bar input, .filter-bar button { 
             padding: 8px; 
@@ -67,7 +67,7 @@
         .filter-bar input[type="text"] { width: 200px; }
         .filter-bar .circle-btn { border-radius: 50%; width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; }
         .filter-bar .bookmark-btn { font-size: 1.2em; }
-        /* Filter Bar (Offers) */
+        /* Offer Filter Bar */
         .offer-filter-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .offer-filter-bar button { 
             padding: 8px 16px; 
@@ -80,11 +80,11 @@
         }
         .offer-filter-bar button.active { background: #9b59b6; }
         .offer-filter-bar button:hover { background: #444; }
+        .offer-filter-bar button.active:hover { background: #8e44ad; }
         .offer-filter-bar input[type="text"] { width: 200px; padding: 8px; border: 1px solid #555; border-radius: 4px; }
         /* Counts */
         .counts { text-align: center; margin: 10px 0; font-size: 1em; color: #fff; font-weight: bold; }
         /* Firms Table */
-        .table-container { overflow-x: auto; }
         .firms-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .firms-table th, .firms-table td { padding: 12px; text-align: left; border-bottom: 1px solid #444; }
         .firms-table th { background: #2a2a2a; font-weight: bold; color: #fff; }
@@ -170,7 +170,7 @@
             border-radius: 8px; 
             padding: 15px; 
             margin: 10px 0; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
         }
         .offer-card-left { flex: 1; }
         .offer-card-right { 
@@ -185,7 +185,7 @@
         .offer-card h3 { font-size: 1.3em; margin: 10px 0; }
         .offer-card .rating { color: #6f42c1; font-size: 0.9em; }
         .offer-card .stars { color: #ffc107; }
-        .offer-card .discount { font-weight: bold; color: #ff4d4d; font-size: 1.1em; }
+        .offer-card .discount { font-weight: bold; color: #dc3545; font-size: 1.1em; }
         .offer-card .description { font-size: 0.9em; color: #ccc; }
         .offer-card-bottom { 
             display: flex; 
@@ -195,13 +195,15 @@
             border-top: 1px solid #444; 
             padding-top: 10px;
         }
-        .offer-card .promo-code { font-size: 0.9em; font-weight: bold; }
+        .offer-card .promo-code { font-size: 0.9em; font-weight: bold; color: #fff; }
         .offer-card .copy-icon { cursor: pointer; color: #9b59b6; margin-left: 5px; }
+        /* Reviews */
+        .reviews-placeholder { text-align: center; color: #ccc; }
         @media (max-width: 600px) {
             .tabs { flex-direction: column; align-items: center; }
             .filter-bar, .offer-filter-bar { flex-direction: column; }
             .filter-bar input[type="text"], .offer-filter-bar input[type="text"] { width: 100%; }
-            .challenges-table th, .challenges-table td, .firms-table th, .firms-table td { padding: 8px 4px; font-size: 0.85em; }
+            .firms-table th, .firms-table td, .challenges-table th, .challenges-table td { padding: 8px 4px; font-size: 0.85em; }
             .firm-details, .offer-card { padding: 10px; }
             .offer-card { flex-direction: column; }
             .offer-card-right { margin-left: 0; margin-top: 10px; }
@@ -238,7 +240,7 @@
                     </tr>
                 </thead>
                 <tbody id="firms-table-body">
-                    <!-- Static row populated by JS -->
+                    <!-- Static row -->
                 </tbody>
             </table>
         </div>
@@ -288,14 +290,14 @@
                     </tr>
                 </thead>
                 <tbody id="challenges-table-body">
-                    <!-- Static rows populated by JS -->
+                    <!-- Static rows -->
                 </tbody>
             </table>
         </div>
     </div>
     <div id="offers" class="tab-content section">
         <h2>Special Offers</h2>
-        <p>Discover the latest offers from top prop firms. (Static for demo; will fetch from /api/offers later.)</p>
+        <p>Discover the latest offers from prop firms. (Static for demo; will fetch from /api/offers later.)</p>
         <div class="offer-filter-bar">
             <div>
                 <button>September Offers 🔥</button>
@@ -305,12 +307,12 @@
             <input type="text" placeholder="Search for Offers">
         </div>
         <div id="offers-container">
-            <!-- Static offer card populated by JS -->
+            <!-- Static offer card -->
         </div>
     </div>
     <div id="reviews" class="tab-content section">
         <h2>Reviews</h2>
-        <p>No reviews available yet. Check back later.</p>
+        <p class="reviews-placeholder">No reviews available yet. Check back later.</p>
     </div>
 
     <!-- Total Counts -->
@@ -324,16 +326,16 @@
             {
                 id: 1,
                 firm: 'FTMO',
-                rankReviews: '1 / 4.8 (25K+)',
-                country: 'Czech Republic',
-                years: '10',
-                assets: 'Forex, Indices, Commodities, Crypto',
-                platforms: 'MT4, MT5, cTrader',
-                maxAllocations: '$2,000,000',
-                promo: '5% Off Challenges',
-                profitSplit: 'Up to 90%',
+                rankReviews: '⭐ 4.8 (1023)',
+                country: 'Czechia',
+                years: '10+ Years',
+                assets: 'FX, Indices',
+                platforms: 'MT4, MT5',
+                maxAllocations: '$400K',
+                promo: '5% OFF',
+                profitSplit: 'Active',
                 affiliateLink: 'https://ftmo.com/en/affiliate-program/?ref=yourid',
-                description: 'Leading prop firm for forex traders with two-phase challenges, scaling up to $2M, and support for MT4/MT5/cTrader platforms.',
+                description: 'Leading prop firm for forex traders with two-phase challenges, scaling up to $400K, and support for MT4/MT5 platforms.',
                 logo: 'https://ftmo.com/wp-content/themes/ftmo/assets/images/ftmo-logo-white.svg'
             }
         ];
@@ -344,7 +346,7 @@
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td><span class="firm-name" data-firm-id="${row.id}">${row.firm}</span></td>
-                <td><span class="stars">★★★★★</span> ${row.rankReviews}</td>
+                <td>${row.rankReviews}</td>
                 <td>${row.country}</td>
                 <td>${row.years}</td>
                 <td>${row.assets}</td>
@@ -356,7 +358,6 @@
             `;
             firmsTableBody.appendChild(tr);
 
-            // Add hidden details row
             const detailsRow = document.createElement('tr');
             detailsRow.innerHTML = `
                 <td colspan="10">
@@ -388,7 +389,7 @@
                 dailyLoss: '3%',
                 maxLoss: '6%',
                 profitSplit: '80%',
-                pa: 'Standard',
+                pa: 'W',
                 price: '$379.05',
                 oldPrice: '$399.00',
                 affiliateLink: 'https://fundingpips.com/affiliate?ref=yourid'
@@ -449,9 +450,9 @@
                 firm: 'FTMO',
                 logo: 'https://ftmo.com/wp-content/themes/ftmo/assets/images/ftmo-logo-white.svg',
                 rating: '4.8',
-                reviews: '25K+',
+                reviews: '1023',
                 discount: '5% OFF',
-                description: '5% OFF all challenge accounts',
+                description: '5% OFF all accounts',
                 promoCode: 'MATCH',
                 affiliateLink: 'https://ftmo.com/en/affiliate-program/?ref=yourid'
             }
