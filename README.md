@@ -71,14 +71,12 @@
             display: block;
             margin: 10px 0 5px;
         }
-        form select, form button {
+        form button {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 4px;
             border: 1px solid #ccc;
-        }
-        form button {
             background-color: #2196F3;
             color: white;
             border: none;
@@ -96,9 +94,19 @@
             margin: 10px 0;
             font-weight: bold;
         }
-        #profitSplitDetails {
+        #profitSplitOptions {
             display: none;
             margin-left: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        #profitSplitOptions div {
+            padding: 5px;
+            cursor: pointer;
+        }
+        #profitSplitOptions div:hover {
+            background-color: #d0d0d0;
         }
         #contributionDetails {
             background: #f9f9f9;
@@ -129,25 +137,18 @@
                 <span id="toggleStatus">ON</span>
             </div>
             <form id="coFundingForm">
-                <label for="accountSize">Account Size:</label>
-                <select id="accountSize" name="accountSize" required>
-                    <option value="">Select Account Size</option>
-                    <option value="1000">$1,000</option>
-                    <option value="5000">$5,000</option>
-                    <option value="10000">$10,000</option>
-                    <option value="25000">$25,000</option>
-                    <option value="50000">$50,000</option>
-                </select>
-
-                <div id="profitSplitTap">Profit Split Agreement (Tap to View)</div>
-                <div id="profitSplitDetails">
-                    <p>70/30</p>
+                <label>Profit Split Agreement:</label>
+                <div id="profitSplitTap">Tap to Select Profit Split</div>
+                <div id="profitSplitOptions">
+                    <div data-split="50/50">50/50</div>
+                    <div data-split="70/30">70/30</div>
+                    <div data-split="80/20">80/20</div>
                 </div>
 
                 <div id="contributionDetails">
                     <h3>showTab - Contribution Breakdown</h3>
                     <p><strong>Account Price:</strong> <span id="accountPrice">TBD</span></p>
-                    <p><strong>Profit Split:</strong> <span id="selectedProfitSplit">70/30</span></p>
+                    <p><strong>Profit Split:</strong> <span id="selectedProfitSplit">TBD</span></p>
                     <p><strong>Requester Contribution:</strong> <span id="requesterContribution">TBD</span></p>
                     <p><strong>Partner Contribution:</strong> <span id="partnerContribution">TBD</span></p>
                 </div>
@@ -160,7 +161,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('coFundingForm');
-            const accountSize = document.getElementById('accountSize');
             const accountPrice = document.getElementById('accountPrice');
             const selectedProfitSplit = document.getElementById('selectedProfitSplit');
             const requesterContribution = document.getElementById('requesterContribution');
@@ -171,16 +171,12 @@
             const submitButton = document.getElementById('submitButton');
             const contributionDetails = document.getElementById('contributionDetails');
             const profitSplitTap = document.getElementById('profitSplitTap');
-            const profitSplitDetails = document.getElementById('profitSplitDetails');
+            const profitSplitOptions = document.getElementById('profitSplitOptions');
 
-            // Simulated API data for account sizes and prices (replace with actual API)
-            // Prices based on 2025 offers, with $15 for $1K as per example
+            // Fixed account size and price (replace with API in production)
+            const fixedAccountSize = '1000'; // $1,000 account
             const accountData = {
-                '1000': 15,   // As per example
-                '5000': 39,   // Typical for $5K account
-                '10000': 85,  // Typical for $10K
-                '25000': 165, // Typical for $25K
-                '50000': 260  // Typical for $50K
+                '1000': 15 // $15 for $1,000, as per example
             };
 
             // Simulate API call to fetch price for account size
@@ -192,18 +188,18 @@
                 return Promise.resolve(accountData[size] || 0);
             }
 
+            // Selected profit split
+            let currentProfitSplit = null;
+
             // Update contributions
             async function updateContributions() {
-                const size = accountSize.value;
-                const split = 70; // Fixed at 70/30 as per requirement
+                const size = fixedAccountSize;
+                const split = currentProfitSplit ? parseInt(currentProfitSplit.split('/')[0]) : 0;
 
-                let price = 0;
-                if (size) {
-                    price = await getPrice(size);
-                }
+                const price = await getPrice(size);
 
                 accountPrice.textContent = price ? `$${price.toFixed(2)}` : 'TBD';
-                selectedProfitSplit.textContent = '70/30';
+                selectedProfitSplit.textContent = currentProfitSplit || 'TBD';
                 
                 if (price && split) {
                     const requesterShare = (price * split) / 100;
@@ -220,28 +216,38 @@
             function toggleCoFunding() {
                 const isEnabled = calculatorToggle.checked;
                 toggleStatus.textContent = isEnabled ? 'ON' : 'OFF';
-                accountSize.disabled = !isEnabled;
                 submitButton.disabled = !isEnabled;
                 contributionDetails.style.display = isEnabled ? 'block' : 'none';
-                if (isEnabled) {
-                    updateContributions();
-                } else {
+                profitSplitTap.style.pointerEvents = isEnabled ? 'auto' : 'none';
+                profitSplitTap.style.backgroundColor = isEnabled ? '#e0e0e0' : '#cccccc';
+                if (!isEnabled) {
+                    profitSplitOptions.style.display = 'none';
                     accountPrice.textContent = 'TBD';
-                    selectedProfitSplit.textContent = '70/30';
+                    selectedProfitSplit.textContent = 'TBD';
                     requesterContribution.textContent = 'TBD';
                     partnerContribution.textContent = 'TBD';
                     result.textContent = '';
+                } else {
+                    updateContributions();
                 }
             }
 
-            // Toggle profit split details visibility
+            // Toggle profit split options visibility
             profitSplitTap.addEventListener('click', () => {
-                profitSplitDetails.style.display = profitSplitDetails.style.display === 'block' ? 'none' : 'block';
+                if (calculatorToggle.checked) {
+                    profitSplitOptions.style.display = profitSplitOptions.style.display === 'block' ? 'none' : 'block';
+                }
             });
 
-            // Event listeners
-            calculatorToggle.addEventListener('change', toggleCoFunding);
-            accountSize.addEventListener('change', updateContributions);
+            // Handle profit split selection
+            profitSplitOptions.querySelectorAll('div').forEach(option => {
+                option.addEventListener('click', () => {
+                    currentProfitSplit = option.getAttribute('data-split');
+                    profitSplitTap.textContent = `Profit Split Agreement: ${currentProfitSplit}`;
+                    profitSplitOptions.style.display = 'none';
+                    updateContributions();
+                });
+            });
 
             // Form submission
             form.addEventListener('submit', async (e) => {
@@ -253,17 +259,17 @@
                     return;
                 }
 
-                const size = accountSize.value;
-
-                if (size) {
-                    const price = await getPrice(size);
-                    const requesterShare = (price * 70) / 100; // Fixed 70/30 split
-                    result.textContent = `Request submitted! Your contribution of $${requesterShare.toFixed(2)} is locked.`;
-                    result.className = '';
-                } else {
-                    result.textContent = 'Please select an account size.';
+                if (!currentProfitSplit) {
+                    result.textContent = 'Please select a profit split.';
                     result.className = 'error';
+                    return;
                 }
+
+                const size = fixedAccountSize;
+                const price = await getPrice(size);
+                const requesterShare = (price * parseInt(currentProfitSplit.split('/')[0])) / 100;
+                result.textContent = `Request submitted! Your contribution of $${requesterShare.toFixed(2)} is locked.`;
+                result.className = '';
             });
 
             // Initial setup
